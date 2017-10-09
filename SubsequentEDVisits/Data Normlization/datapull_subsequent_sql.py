@@ -1,6 +1,4 @@
 import sqlite3
-import csv
-import os
 
 
 def arrival_date_time(subject_id, csn, conn):
@@ -88,13 +86,13 @@ def vitals(subject_id, csn, conn, flowsheet_name):
             WHERE STUDYID = {}
             AND FlowsheetDisplayName = {}
             AND CSN = {}""".format(subject_id, flowsheet_name, csn)
-    
+
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found lab value")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found lab value")
+    ##            print(subject_id, item)
     return data
 
 
@@ -120,13 +118,13 @@ def lab(subject_id, csn, conn, labcompname):
     sql = """SELECT ORD_VALUE, SPECIMN_TAKEN_TIME, RESULT_TIME, PROC_NAME, LabComponentName FROM LAB_ActiveLaterVisits
           WHERE STUDYID = {}
           AND LabComponentName = {}
-          AND CSN = {}""".format(subject_id,labcompname, csn)
+          AND CSN = {}""".format(subject_id, labcompname, csn)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found lab value")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found lab value")
+    ##            print(subject_id, item)
     return data
 
 
@@ -148,7 +146,7 @@ def lab2(subject_id, csn, conn, labcompnames):
            lab_name (str): name of the lab - Complete Blood Count
            component_name (str): component tested - Hematocrit
     """
-           
+
     cur = conn.cursor()
     sql = """SELECT ORD_VALUE, SPECIMN_TAKEN_TIME, RESULT_TIME, PROC_NAME, LabComponentName FROM LAB_ActiveLaterVisits
           WHERE STUDYID = {}
@@ -156,10 +154,10 @@ def lab2(subject_id, csn, conn, labcompnames):
           AND CSN = {}""".format(subject_id, labcompnames, csn)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found lab value")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found lab value")
+    ##            print(subject_id, item)
     return data
 
 
@@ -188,10 +186,10 @@ def lab3(subject_id, csn, conn, searchtext):
           AND CSN = {}""".format(subject_id, searchtext, csn)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found lab value")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found lab value")
+    ##            print(subject_id, item)
     return data
 
 
@@ -222,14 +220,15 @@ def medication(subject_id, csn, conn, theraclass, orderingmode):
           WHERE STUDYID = {} AND THERACLASS = {}
           AND OrderingMode = {}
           AND CSN = {}""".format(
-              subject_id,theraclass, orderingmode, csn)
+        subject_id, theraclass, orderingmode, csn)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found medication")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found medication")
+    ##            print(subject_id, item)
     return data
+
 
 def medication2(subject_id, csn, conn, theraclass):
     """Gets medication information for meds givven in hospital from the medication table
@@ -253,13 +252,13 @@ def medication2(subject_id, csn, conn, theraclass):
           WHERE STUDYID = {}
           AND THERACLASS = {}
           AND CSN = {}""".format(
-              subject_id, theraclass, csn)
+        subject_id, theraclass, csn)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found medication")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found medication")
+    ##            print(subject_id, item)
     return data
 
 
@@ -285,10 +284,10 @@ def chest_imaging(subject_id, csn, conn):
           AND CSN = {}""".format(subject_id, csn)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found chest imaging")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found chest imaging")
+    ##            print(subject_id, item)
     return data
 
 
@@ -310,16 +309,16 @@ def final_diagnoses(subject_id, csn, conn):
           AND CSN = {}""".format(subject_id, csn)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found diagnoses")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found diagnoses")
+    ##            print(subject_id, item)
     return data
 
 
 def main():
     conn = sqlite3.connect(r"\\win.ad.jhu.edu\cloud\sddesktop$\CEIRS\SubsequentEDVisits\CEIRS.db")
-    #Get subject IDs
+    # Get subject IDs
     cur = conn.cursor()
     sql = """SELECT STUDYID, CSN FROM SubsequentVisitLog"""
     cur.execute(sql)
@@ -327,16 +326,16 @@ def main():
     for subject in subjects:
         subject_id = "'{}'".format(subject[0])
         csn = "'{}'".format(subject[1])
-##        print(arrival_date_time(subject_id, conn))
-##        print(discharge_date_time(subject_id, conn))
-##        print(lab(subject_id, conn, "'PH SPECIMEN'"))
-##        print(medication(subject_id, conn, "'ANTIBIOTICS'","'Inpatient'"))
-##        print(chest_imaging(subject_id, conn))
-##        print(final_diagnoses(subject_id, conn))
+        ##        print(arrival_date_time(subject_id, conn))
+        ##        print(discharge_date_time(subject_id, conn))
+        ##        print(lab(subject_id, conn, "'PH SPECIMEN'"))
+        ##        print(medication(subject_id, conn, "'ANTIBIOTICS'","'Inpatient'"))
+        ##        print(chest_imaging(subject_id, conn))
+        ##        print(final_diagnoses(subject_id, conn))
         print(vitals(subject_id, csn, conn, "'O2 Device'"), "o2 device")
-        
 
     conn.close()
+
 
 if __name__ == "__main__":
     main()

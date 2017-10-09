@@ -23,7 +23,7 @@ class ADT:
         self._time = time
         self._status = status
         self._dispo = dispo
-        
+
     @property
     def date(self):
         """str: date of arrival or discharge"""
@@ -100,7 +100,7 @@ class Vitals:
             time_to_check (str): time the vital sign should be collected before
             generally the discharge time
         """
-        
+
         time_to_check = datetime.strptime(time_to_check, '%Y-%m-%d %H:%M:%S')
         lab_time = datetime.strptime(self._date_time, '%Y-%m-%d %H:%M:%S')
 
@@ -174,7 +174,7 @@ class Lab:
             time_to_check (str): time the lab should be collected before
             generally the discharge time
         """
-        
+
         time_to_check = datetime.strptime(time_to_check, '%Y-%m-%d %H:%M:%S')
         lab_time = datetime.strptime(self._collect_date_time, '%Y-%m-%d %H:%M:%S')
         return time_to_check >= lab_time
@@ -251,7 +251,7 @@ class Medication:
             time_to_check (str): time the med should be ordered before
             generally the discharge time
         """
-        
+
         time_to_check = datetime.strptime(time_to_check, '%Y-%m-%d %H:%M:%S')
         med_time = datetime.strptime(self._date_time, '%Y-%m-%d %H:%M:%S')
         return time_to_check >= med_time
@@ -311,12 +311,12 @@ class Medication2:
             time_to_check (str): time the med should be ordered before
             generally the discharge time
         """
-        
+
         time_to_check = datetime.strptime(time_to_check, '%Y-%m-%d %H:%M:%S')
         med_time = datetime.strptime(self._date_time, '%Y-%m-%d %H:%M:%S')
         return time_to_check >= med_time
 
- 
+
 class Imaging:
     """Represents Imaging done
 
@@ -371,7 +371,7 @@ class Imaging:
             time_to_check (str): time the image should be collected before
             generally the discharge time
         """
-        
+
         time_to_check = datetime.strptime(time_to_check, '%Y-%m-%d %H:%M:%S')
         order_time = datetime.strptime(self._date_time, '%Y-%m-%d %H:%M:%S')
         return time_to_check >= order_time

@@ -139,7 +139,6 @@ def get_vitals_info(coordinator, redcap_label, redcap_raw, subject_id, conn):
         redcap_label['edenrollchart_temperature'] = 'Not Recorded'
         redcap_raw['edenrollchart_temperature'] = '999'
 
-
     # Resp
     resp = ed.vitals(subject_id, conn, "'Resp'")
     if resp:
@@ -208,14 +207,14 @@ def get_oxygen_info(coordinator, redcap_label, redcap_raw, subject_id, conn):
     """
     # Find relevant O2 devices
     oxygen_info = ed.vitals(subject_id, conn, "'O2 Device'")
-    oxygen_type_codes = {'Nasal cannula' : "1",
-                         'High flow nasal cannula' : '1',
-                         'Non-rebreather mask' : '2',
-                         'Simple Facemask' : '2',
-                        'Trach mask' : '2',
-                         'Venturi mask' : '2',
-                         'BiPAP' : '3',
-                         'CPAP' : '3'
+    oxygen_type_codes = {'Nasal cannula': "1",
+                         'High flow nasal cannula': '1',
+                         'Non-rebreather mask': '2',
+                         'Simple Facemask': '2',
+                         'Trach mask': '2',
+                         'Venturi mask': '2',
+                         'BiPAP': '3',
+                         'CPAP': '3'
                          }
 
     # Find all oxygen values
@@ -225,7 +224,8 @@ def get_oxygen_info(coordinator, redcap_label, redcap_raw, subject_id, conn):
             oxygen = Vitals(*vital_sign)
             if oxygen.value in ('Nasal cannula', 'Non-rebreather mask', 'High flow nasal cannula', 'Simple Facemask',
                                 'Trach mask', 'Venturi mask'):
-                coordinator['Oxygen Supplmentation in ED'] = "{} Recorded At {}, ".format(oxygen.value, oxygen.date_time)
+                coordinator['Oxygen Supplmentation in ED'] = "{} Recorded At {}, ".format(oxygen.value,
+                                                                                          oxygen.date_time)
                 redcap_label['edenrollchart_o2supplementanytime'] = 'Yes'
                 redcap_label['edenrollchart_o2supplementanytime_route'] = oxygen.value
 
@@ -353,7 +353,6 @@ def get_flutesting_info(coordinator, redcap_label, redcap_raw, subject_id, conn,
     influenza_testing = defaultdict(str)
     if influneza_tests:
 
-
         for test_result in influneza_tests:
             influenza_lab = Lab(*test_result)
             if influenza_lab.check_time(dc_time) is True:
@@ -408,11 +407,13 @@ def get_flutesting_info(coordinator, redcap_label, redcap_raw, subject_id, conn,
             else:
                 test_result = 'positive'
                 redcap_label['edenrollchart_flutest{}_typing'.format(influenza_count)] = 'Yes'
-                redcap_label['edenrollchart_flutest{}_typing_specify'.format(influenza_count)] = influenza_result.split(" ")[1]
+                redcap_label['edenrollchart_flutest{}_typing_specify'.format(influenza_count)] = \
+                influenza_result.split(" ")[1]
                 redcap_label['edenrollchart_flutest{}_result'.format(influenza_count)] = 'Positive'
 
                 redcap_raw['edenrollchart_flutest{}_typing'.format(influenza_count)] = '1'
-                redcap_raw['edenrollchart_flutest{}_typing_specify'.format(influenza_count)] = influenza_result.split(" ")[1]
+                redcap_raw['edenrollchart_flutest{}_typing_specify'.format(influenza_count)] = \
+                influenza_result.split(" ")[1]
                 redcap_raw['edenrollchart_flutest{}_result'.format(influenza_count)] = '2'
 
             coordinator[influenza_result_name] = influenza_result
@@ -507,18 +508,18 @@ def get_othervir_info(coordinator, redcap_label, redcap_raw, subject_id, conn, d
             coordinator[othervirus_result_name] = othervirus_result
             test_name, order_time = othervirus_result_name.split("|")
             redcap_label_link = {'RSV NAT': 'edenrollchart_rsv',
-                            'RHINOVIRUS NAT': 'edenrollchart_rhinovirus',
-                            'ADENOVIRUS NAT': 'edenrollchart_adenovirus',
-                            'PARAINFLUENZAE 3 NAT': 'edenrollchart_parainfluenza',
-                            'PARAINFLUENZAE 2 NAT': 'edenrollchart_parainfluenza',
-                            'METAPNEUMO NAT': 'edenrollchart_metapneumovirus',
-                            'RSV PCR': 'edenrollchart_rsv',
-                            'RHINOVIRUS PCR': 'edenrollchart_rhinovirus',
-                            'ADENOVIRUS PCR': 'edenrollchart_adenovirus',
-                            'PARAINFLUENZAE 3 PCR': 'edenrollchart_parainfluenza',
-                            'PARAINFLUENZAE 2 PCR': 'edenrollchart_parainfluenza',
-                            'METAPNEUMOVIRUS PCR': 'edenrollchart_metapneumovirus'
-                            }
+                                 'RHINOVIRUS NAT': 'edenrollchart_rhinovirus',
+                                 'ADENOVIRUS NAT': 'edenrollchart_adenovirus',
+                                 'PARAINFLUENZAE 3 NAT': 'edenrollchart_parainfluenza',
+                                 'PARAINFLUENZAE 2 NAT': 'edenrollchart_parainfluenza',
+                                 'METAPNEUMO NAT': 'edenrollchart_metapneumovirus',
+                                 'RSV PCR': 'edenrollchart_rsv',
+                                 'RHINOVIRUS PCR': 'edenrollchart_rhinovirus',
+                                 'ADENOVIRUS PCR': 'edenrollchart_adenovirus',
+                                 'PARAINFLUENZAE 3 PCR': 'edenrollchart_parainfluenza',
+                                 'PARAINFLUENZAE 2 PCR': 'edenrollchart_parainfluenza',
+                                 'METAPNEUMOVIRUS PCR': 'edenrollchart_metapneumovirus'
+                                 }
             if othervirus_result == 'negative':
                 redcap_label[redcap_label_link[test_name]] = 'Negative'
                 redcap_raw[redcap_label_link[test_name]] = '0'
@@ -558,18 +559,18 @@ def get_antiviral_info(coordinator, redcap_label, redcap_raw, subject_id, conn, 
     ed_antivirals = ed.medication2(
         subject_id, conn, "'ANTIVIRALS'")
     if ed_antivirals:
-        med_route_codes = {'IV' : '3',
-                           'Intravenous' : '3',
-                           'Oral' : '1',
-                           'PO' : '1',
-                           'IM' : '2',
-                           'Intramuscular' : '2'
+        med_route_codes = {'IV': '3',
+                           'Intravenous': '3',
+                           'Oral': '1',
+                           'PO': '1',
+                           'IM': '2',
+                           'Intramuscular': '2'
                            }
 
         for antiviral in ed_antivirals:
             antiviral_lab = Medication2(*antiviral)
             med_route = antiviral_lab.route
-            #Skip meds without proper routes and give after dishcarge from the ED
+            # Skip meds without proper routes and give after dishcarge from the ED
             if antiviral_lab.check_time(dc_time) is True and med_route_codes.get(med_route):
                 ed_antiviral_count += 1
                 if ed_antiviral_count < 3:
@@ -687,12 +688,12 @@ def get_antibiotic_info(coordinator, redcap_label, redcap_raw, subject_id, conn,
     ed_antibiotics = ed.medication2(
         subject_id, conn, "'ANTIBIOTICS'")
     if ed_antibiotics:
-        med_route_codes = {'IV' : '3',
-                           'Intravenous' : '3',
-                           'Oral' : '1',
-                           'PO' : '1',
-                           'IM' : '2',
-                           'Intramuscular' : '2'
+        med_route_codes = {'IV': '3',
+                           'Intravenous': '3',
+                           'Oral': '1',
+                           'PO': '1',
+                           'IM': '2',
+                           'Intramuscular': '2'
                            }
 
         for antibiotic in ed_antibiotics:
@@ -712,7 +713,7 @@ def get_antibiotic_info(coordinator, redcap_label, redcap_raw, subject_id, conn,
                 med_name = abx_med.name.split(" ")[0]
                 order_date_time = abx_med.date_time
                 order_date, order_time = order_date_time.split(" ")
-                coordinator["ED Antibiotics #{}".format( ed_antibiotics_count)] = "{} {} {} {}".format(
+                coordinator["ED Antibiotics #{}".format(ed_antibiotics_count)] = "{} {} {} {}".format(
                     med_name, med_route, order_date, order_time)
                 redcap_label['edenrollchart_antibiotic{}_name'.format(ed_antibiotics_count)] = med_name
                 redcap_label['edenrollchart_antibiotic{}_date'.format(ed_antibiotics_count)] = order_date
@@ -724,7 +725,7 @@ def get_antibiotic_info(coordinator, redcap_label, redcap_raw, subject_id, conn,
                 redcap_raw['edenrollchart_antibiotic{}_time'.format(ed_antibiotics_count)] = order_time[:5]
                 redcap_raw['edenrollchart_antibiotic{}_route'.format(ed_antibiotics_count)] = med_route_codes[med_route]
     else:
-        coordinator['ED Antibiotics' ] = 'No antibiotics given in the ED'
+        coordinator['ED Antibiotics'] = 'No antibiotics given in the ED'
         redcap_label['edenrollchart_antibiotic'] = 'No'
         redcap_raw['edenrollchart_antibiotic'] = '0'
 
@@ -845,7 +846,7 @@ def get_diagnosis_info(coordinator, redcap_label, redcap_raw, subject_id, conn):
         contain data to write to file
     """
 
-    #Initial all values to be no
+    # Initial all values to be no
     redcap_label['edenrollchart_dxinfluenza'] = 'No'
     redcap_label['edenrollchart_dxviralsyndrome'] = 'No'
     redcap_label['edenrollchart_dxpneumonia'] = 'No'

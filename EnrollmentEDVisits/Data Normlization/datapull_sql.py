@@ -1,6 +1,4 @@
 import sqlite3
-import csv
-import os
 
 
 def arrival_date_time(subject_id, conn):
@@ -85,13 +83,13 @@ def vitals(subject_id, conn, flowsheet_name):
             FROM Flowsheets
             WHERE STUDYID = {}
             AND FlowsheetDisplayName = {}""".format(subject_id, flowsheet_name)
-    
+
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found lab value")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found lab value")
+    ##            print(subject_id, item)
     return data
 
 
@@ -116,13 +114,13 @@ def lab(subject_id, conn, labcompname):
     cur = conn.cursor()
     sql = """SELECT ORD_VALUE, SPECIMN_TAKEN_TIME, RESULT_TIME, PROC_NAME, LabComponentName FROM LAB
           WHERE STUDYID = {}
-          AND LabComponentName = {}""".format(subject_id,labcompname)
+          AND LabComponentName = {}""".format(subject_id, labcompname)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found lab value")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found lab value")
+    ##            print(subject_id, item)
     return data
 
 
@@ -144,17 +142,17 @@ def lab2(subject_id, conn, labcompnames):
            lab_name (str): name of the lab - Complete Blood Count
            component_name (str): component tested - Hematocrit
     """
-           
+
     cur = conn.cursor()
     sql = """SELECT ORD_VALUE, SPECIMN_TAKEN_TIME, RESULT_TIME, PROC_NAME, LabComponentName FROM LAB
           WHERE STUDYID = {}
           AND ({})""".format(subject_id, labcompnames)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found lab value")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found lab value")
+    ##            print(subject_id, item)
     return data
 
 
@@ -182,10 +180,10 @@ def lab3(subject_id, conn, searchtext):
           AND PROC_NAME LIKE {}""".format(subject_id, searchtext)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found lab value")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found lab value")
+    ##            print(subject_id, item)
     return data
 
 
@@ -215,14 +213,15 @@ def medication(subject_id, conn, theraclass, orderingmode):
           OrderingMode FROM Medication
           WHERE STUDYID = {} AND THERACLASS = {}
           AND OrderingMode = {}""".format(
-              subject_id,theraclass, orderingmode)
+        subject_id, theraclass, orderingmode)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found medication")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found medication")
+    ##            print(subject_id, item)
     return data
+
 
 def medication2(subject_id, conn, theraclass):
     """Gets medication information for meds givven in hospital from the medication table
@@ -244,13 +243,13 @@ def medication2(subject_id, conn, theraclass):
     sql = """SELECT MedIndexName, TimeActionTaken, MedRoute
           FROM MedAdminName
           WHERE STUDYID = {} AND THERACLASS = {}""".format(
-              subject_id, theraclass)
+        subject_id, theraclass)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found medication")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found medication")
+    ##            print(subject_id, item)
     return data
 
 
@@ -275,10 +274,10 @@ def chest_imaging(subject_id, conn):
           AND OrderStatus = 'Completed'""".format(subject_id)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found chest imaging")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found chest imaging")
+    ##            print(subject_id, item)
     return data
 
 
@@ -299,32 +298,32 @@ def final_diagnoses(subject_id, conn):
           WHERE STUDYID = {}""".format(subject_id)
     cur.execute(sql)
     data = cur.fetchall()
-##    if data:
-##        for item in data:
-##            print("found diagnoses")
-##            print(subject_id, item)
+    ##    if data:
+    ##        for item in data:
+    ##            print("found diagnoses")
+    ##            print(subject_id, item)
     return data
 
 
 def main():
     conn = sqlite3.connect(r"\\win.ad.jhu.edu\cloud\sddesktop$\CEIRS\CEIRS.db")
-    #Get subject IDs
+    # Get subject IDs
     cur = conn.cursor()
     sql = """SELECT DISTINCT STUDYID FROM DEMOGRAPHICS"""
     cur.execute(sql)
     subject_ids = cur.fetchall()
     for subject_id in subject_ids:
         subject_id = "'{}'".format(subject_id[0])
-##        print(arrival_date_time(subject_id, conn))
-##        print(discharge_date_time(subject_id, conn))
-##        print(lab(subject_id, conn, "'PH SPECIMEN'"))
-##        print(medication(subject_id, conn, "'ANTIBIOTICS'","'Inpatient'"))
-##        print(chest_imaging(subject_id, conn))
-##        print(final_diagnoses(subject_id, conn))
+        ##        print(arrival_date_time(subject_id, conn))
+        ##        print(discharge_date_time(subject_id, conn))
+        ##        print(lab(subject_id, conn, "'PH SPECIMEN'"))
+        ##        print(medication(subject_id, conn, "'ANTIBIOTICS'","'Inpatient'"))
+        ##        print(chest_imaging(subject_id, conn))
+        ##        print(final_diagnoses(subject_id, conn))
         print(vitals(subject_id, conn, "'O2 Device'"), "o2 device")
-        
 
     conn.close()
+
 
 if __name__ == "__main__":
     main()

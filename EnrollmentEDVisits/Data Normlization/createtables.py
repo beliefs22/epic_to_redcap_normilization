@@ -11,7 +11,7 @@ def create_tables(conn):
            save the tables
     """
     cur = conn.cursor()
-    #Get Text Files Matt Stored
+    # Get Text Files Matt Stored
     sep = os.sep
     datafilespath = os.getcwd() + sep + 'Linking_Log_For_Matt' + sep + 'Matt_Place_Text_Files_Here'
     current_files = os.listdir(datafilespath)
@@ -39,7 +39,8 @@ def create_tables(conn):
             # Insert Values Statement
             for table_row in table_data:
                 transform = "'{}'"
-                data_as_text = ",".join([transform.format(item.replace("'", "").replace(",", ""))for item in table_row])
+                data_as_text = ",".join(
+                    [transform.format(item.replace("'", "").replace(",", "")) for item in table_row])
                 insert_sql = """INSERT INTO {} VALUES ({})""".format(
                     table_title, data_as_text)
                 cur.execute(insert_sql)
@@ -47,7 +48,7 @@ def create_tables(conn):
             conn.commit()
             print("Done Creating table {}".format(table_title))
 
-    #Create MedAdminName Table from Medication Table and MedicationAdmin tables
+    # Create MedAdminName Table from Medication Table and MedicationAdmin tables
     medication_sql = 'SELECT DISTINCT MEDICATION_ID, MedIndexName, MedRoute, THERACLASS FROM Medication'
     cur.execute(medication_sql)
     medication_info = dict()
@@ -57,7 +58,7 @@ def create_tables(conn):
         med_name = medication[1]
         med_route = medication[2]
         med_class = medication[3]
-        if med_route!= "":
+        if med_route != "":
             medication_info[med_id] = {'name': med_name,
                                        'route': med_route,
                                        'class': med_class
@@ -82,18 +83,17 @@ def create_tables(conn):
                 med_class = 'ANTIVIRALS'
                 med_route = 'IV'
         except KeyError:
-            #Skip meds that don't have route information
+            # Skip meds that don't have route information
             print(medication_admin)
             continue
-        #add name, route , and class fields to medication_admin fields
+        # add name, route , and class fields to medication_admin fields
         if action_taken not in ("Canceled Entry", "Missed", "Refused") and med_dose not in ("", "0"):
             medication_admin = list(medication_admin) + [med_name] + [med_route] + [med_class]
             medication_admins_with_name_and_route.append(medication_admin)
 
     medication_admin_name_table_fields = "studyid, order_med_id, medication_id, TimeActionTaken, ActionTaken, " \
-                                   "MAR_ORIG_DUE_TM, SCHEDULED_TIME, Dose, AdminSite, INFUSION_RATE, InfusionRateUnit, " \
-                                   "DurationToInfuse, Duration_Infuse_Unit, medindexname, medroute, theraclass"
-
+                                         "MAR_ORIG_DUE_TM, SCHEDULED_TIME, Dose, AdminSite, INFUSION_RATE, InfusionRateUnit, " \
+                                         "DurationToInfuse, Duration_Infuse_Unit, medindexname, medroute, theraclass"
 
     table_title = 'MedAdminName'
     drop_table_sql = """DROP TABLE IF EXISTS {}""".format(table_title)
@@ -143,9 +143,11 @@ def create_tables(conn):
         print("Done Creating table {}".format(table_title))
     print("Done Creating table {}".format(table_title))
 
+
 def main():
     conn = sqlite3.connect(r'\\win.ad.jhu.edu\cloud\sddesktop$\CEIRS\CEIRS.db')
     create_tables(conn)
+
 
 if __name__ == "__main__":
     main()
